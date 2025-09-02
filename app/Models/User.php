@@ -2,30 +2,25 @@
 
 namespace App\Models;
 
-use Filament\Jetstream\HasProfilePhoto;
+use Filament\Jetstream\InteractsWIthProfile;
+use Filament\Jetstream\InteractsWithTeams;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasAvatar;
-use Filament\Panel;
+use Filament\Models\Contracts\HasTenants;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Spatie\LaravelPasskeys\Models\Concerns\HasPasskeys;
-use Stephenjude\FilamentTwoFactorAuthentication\TwoFactorAuthenticatable;
-
-use Filament\Models\Contracts\HasTenants;
 use Laravel\Sanctum\HasApiTokens;
-use Filament\Jetstream\HasTeams;
+use Spatie\LaravelPasskeys\Models\Concerns\HasPasskeys;
 
-class User extends Authenticatable implements FilamentUser, HasAvatar, HasPasskeys, MustVerifyEmail, HasTenants
+class User extends Authenticatable implements FilamentUser, HasAvatar, HasPasskeys, HasTenants, MustVerifyEmail
 {
-    use HasFactory;
-    use HasProfilePhoto;
-    use Notifiable;
-    use TwoFactorAuthenticatable;
-
     use HasApiTokens;
-    use HasTeams;
+    use HasFactory;
+    use InteractsWIthProfile;
+    use InteractsWithTeams;
+    use Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -67,16 +62,6 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasPasske
     protected $appends = [
         'profile_photo_url',
     ];
-
-    public function canAccessPanel(Panel $panel): bool
-    {
-        return true;
-    }
-
-    public function getFilamentAvatarUrl(): ?string
-    {
-        return $this->profile_photo_url;
-    }
 
     /**
      * Get the attributes that should be cast.
