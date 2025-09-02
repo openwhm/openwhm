@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Factories;
 
 use App\Models\User;
@@ -7,7 +9,7 @@ use Filament\Jetstream\Models\Team;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\Filament\Jetstream\Models\Team>
+ * @extends Factory<Team>
  */
 class TeamFactory extends Factory
 {
@@ -21,7 +23,7 @@ class TeamFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->unique()->company(),
+            'name' => fake()->unique()->company(),
             'user_id' => User::factory(),
             'personal_team' => true,
         ];
